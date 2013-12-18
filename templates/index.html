@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <title>Чат!</title>
+
+<script src="../socket.io/socket.io.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
+</head>
+  <body>	
+
+<style>
+
+#button{
+  width:100px;
+  height:20px;
+  background-color: red;
+  text-align: center;
+}
+
+
+</style>
+
+
+
+
+<div id='button' data-bind="click: incrementClickCounter"> Button!!!  </div>
+
+Количество кликов -  <span id="result" data-bind="text: numberOfClicks">0</span>
+
+<div id="room">
+<ul></ul>
+<form>
+  <input class='form-control' autocomplete='off' autofocus placeholer='Введите свое сообщение!'>
+</form>
+
+</div>
+
+<script>
+  var socket = io.connect('http://localhost');
+
+var form = $('#room form');
+var ul = $('#room ul');
+
+form.submit(function(){
+  var input = $(this).find(':input');
+  var text = input.val();
+  input.val('');
+
+  socket.emit('message', text, function(data){
+    $('<li>', {text: text}).appendTo(ul);
+  });
+
+  return false;
+});
+
+socket.on('message', function(text){
+  $('<li>', {text: text}).appendTo(ul);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var viewModel = {
+        numberOfClicks : ko.observable(0),
+        incrementClickCounter : function() {
+            var previousCount = this.numberOfClicks();
+            this.numberOfClicks(previousCount + 1);
+        }
+    };
+
+    ko.applyBinding(new viewModel());
+</script>
+</body>
+
+</html>
