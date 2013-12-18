@@ -53,33 +53,6 @@ form.submit(function(){
 socket.on('message', function(text){
   $('<li>', {text: text}).appendTo(ul);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    var viewModel = {
-        numberOfClicks : ko.observable(0),
-        incrementClickCounter : function() {
-            var previousCount = this.numberOfClicks();
-            this.numberOfClicks(previousCount + 1);
-        }
-    };
-
-    ko.applyBinding(new viewModel());
 </script>
 </body>
 
